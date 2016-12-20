@@ -47,7 +47,7 @@ The first URL returns this response:
 	<<< Content-Type: application/json
 	<<< Content-Length: 34
 	<<< 
-	<<< { "number": [ 2, 3, 5, 7, 11, 13 ] }
+	<<< { "numbers": [ 2, 3, 5, 7, 11, 13 ] }
 
 The second URL returns this response:
 
@@ -58,7 +58,7 @@ The second URL returns this response:
 	<<< Content-Type: application/json
 	<<< Content-Length: 40
 	<<< 
-	<<< { "number": [ 1, 1, 2, 3, 5, 8, 13, 21 ] }
+	<<< { "numbers": [ 1, 1, 2, 3, 5, 8, 13, 21 ] }
 
 The service then calculates the result and returns it.
 
@@ -66,7 +66,7 @@ The service then calculates the result and returns it.
 	<<< Content-Type: application/json
 	<<< Content-Length: 44
 	<<< 
-	<<< { "number": [ 1, 2, 3, 5, 7, 8, 11, 13, 21 ] }
+	<<< { "numbers": [ 1, 2, 3, 5, 7, 8, 11, 13, 21 ] }
 
 
 Completion Conditions
