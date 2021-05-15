@@ -6,6 +6,7 @@ import (
         "fmt"
         "encoding/json"
         "strings"
+        "time"
 )
 
 func main() {
@@ -70,25 +71,29 @@ func NumberHandler(w http.ResponseWriter, r *http.Request) {
      // http://yourserver:8080/numbers?u=http://example.com/primes&u=http://foobar.com/fibo
      // above req would enter NumberHandler
      // here we need to parse through each "u" of the req and then call blackbox server on each
-     subreqs := parseURL(r.URL.RawQuery)
      var result []int
-     for i := 0; i < len(subreqs); i++ {
-             var m map[string][]int 
-	     resp, err := http.Get(subreqs[i])
-	     if err != nil {
-		 fmt.Fprint(w, nil)
-		 log.Fatal(err)
-	     }
-             if(resp.StatusCode == http.StatusOK) {
-		     err = json.NewDecoder(resp.Body).Decode(&m)
+     var sortedResult []int
+     go func() {
+	     subreqs := parseURL(r.URL.RawQuery)
+	     for i := 0; i < len(subreqs); i++ {
+		     var m map[string][]int 
+		     resp, err := http.Get(subreqs[i])
 		     if err != nil {
-			log.Fatal(err)
+			 fmt.Fprint(w, nil)
+			 log.Fatal(err)
 		     }
-		     result = append(result, m["numbers"]...)
-             } 
-     }
-     
-     fmt.Fprint(w, mergesort(result))
+		     if(resp.StatusCode == http.StatusOK) {
+			     err = json.NewDecoder(resp.Body).Decode(&m)
+			     if err != nil {
+				log.Fatal(err)
+			     }
+			     result = append(result, m["numbers"]...)
+		     } 
+	     }
+     	     sortedResult = mergesort(result)     
+     }()
+     time.Sleep(500 * time.Millisecond)    
+     fmt.Fprint(w, sortedResult)
 }
 
 
